@@ -1,6 +1,2 @@
-asyncio
 cachetools
-fastapi
-pip-chill
-python-dotenv
-uvicorn
+fastapi==0.95.0
