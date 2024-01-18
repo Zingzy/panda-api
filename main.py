@@ -89,6 +89,10 @@ async def get_image(file_name: str, cache: TTLCache = Depends(create_cache)):
     cache[file_name] = response
     return response
 
+@app.get('/health', tags=["health"])
+def health():
+    return JSONResponse(content={"status": "ok"})
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host='0.0.0.0', port=8000)

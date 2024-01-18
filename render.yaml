@@ -6,6 +6,7 @@ services:
     startCommand: python main.py
     plan: free
     branch: main
+    healthCheckPath: /health
     envVars:
       - key: PORT
         value: 8000
