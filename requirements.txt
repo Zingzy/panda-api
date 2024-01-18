@@ -1,5 +1,6 @@
 asyncio
+cachetools
 fastapi
+pip-chill
 python-dotenv
 uvicorn
-cachetools
