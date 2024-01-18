@@ -1,3 +1,4 @@
 cachetools
 fastapi==0.95.0
 black
+uvicorn==0.26.0

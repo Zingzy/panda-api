@@ -5,6 +5,7 @@ from cachetools import TTLCache
 import random
 from io import BytesIO
 import os
+import uvicorn
 
 app = FastAPI(title="Panda API", description="An API for pandas", version="0.0.1")
 
@@ -87,3 +88,7 @@ async def get_image(file_name: str, cache: TTLCache = Depends(create_cache)):
     response = FileResponse(file_path, media_type="image/jpeg")
     cache[file_name] = response
     return response
+
+
+if __name__ == "__main__":
+    uvicorn.run(app)
