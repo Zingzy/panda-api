@@ -6,7 +6,7 @@ Welcome to the Panda API, where cuteness meets information about everyone's favo
 
 <br>
 <br>
-<h5 align="right">⬆️ random pic using our api 😉</h5>
+<h5 align="right">😉 random pic using our api ⬆️</h5>
 
 <h2>📖 Documentation</h2>
 
