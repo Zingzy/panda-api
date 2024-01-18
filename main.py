@@ -6,11 +6,7 @@ import random
 from io import BytesIO
 import os
 
-app = FastAPI(
-    title="Panda API",
-    description="An API for pandas",
-    version="0.0.1"
-)
+app = FastAPI(title="Panda API", description="An API for pandas", version="0.0.1")
 
 # Enable CORS
 origins = ["*"]
@@ -29,43 +25,56 @@ panda_facts = [i.strip() for i in panda_facts]
 
 panda_pics = os.listdir("images")
 
+
 def create_cache():
     return TTLCache(maxsize=100, ttl=3600)
 
+
 cache = Depends(create_cache)
 
-@app.get('/fact', tags=["facts"])
+
+@app.get("/fact", tags=["facts"])
 def get_random_fact():
     return JSONResponse(content={"fact": random.choice(panda_facts)})
 
-@app.get('/pic', tags=["pics"])
-def get_random_pic(request: Request):
-    return JSONResponse(content={"url": f"{request.base_url}i/{random.choice(panda_pics)}"})
 
-@app.get('/raw_pic', tags=["pics"])
+@app.get("/pic", tags=["pics"])
+def get_random_pic(request: Request):
+    return JSONResponse(
+        content={"url": f"{request.base_url}i/{random.choice(panda_pics)}"}
+    )
+
+
+@app.get("/raw_pic", tags=["pics"])
 async def get_random_pic_raw():
     random_pic_path = f"images/{random.choice(panda_pics)}"
-    with open(random_pic_path, 'rb') as file:
+    with open(random_pic_path, "rb") as file:
         contents = file.read()
     return StreamingResponse(BytesIO(contents), media_type="image/jpeg")
 
-@app.get('/both', tags=["facts", "pics"])
-def get_random_fact_and_pic(request: Request):
-    return JSONResponse(content={
-        "fact": random.choice(panda_facts),
-        "pic": f"{request.base_url}i/{random.choice(panda_pics)}"
-    })
 
-@app.get('/all-facts', tags=["facts"])
+@app.get("/both", tags=["facts", "pics"])
+def get_random_fact_and_pic(request: Request):
+    return JSONResponse(
+        content={
+            "fact": random.choice(panda_facts),
+            "pic": f"{request.base_url}i/{random.choice(panda_pics)}",
+        }
+    )
+
+
+@app.get("/all-facts", tags=["facts"])
 def get_all_facts():
     return JSONResponse(content={"facts": panda_facts})
 
-@app.get('/all-pics', tags=["pics"])
+
+@app.get("/all-pics", tags=["pics"])
 def get_all_pics(request: Request):
     pics = [f"{request.base_url}i/{i}" for i in panda_pics]
     return JSONResponse(content={"pics": pics})
 
-@app.get('/i/{file_name}', tags=["pics"])
+
+@app.get("/i/{file_name}", tags=["pics"])
 async def get_image(file_name: str, cache: TTLCache = Depends(create_cache)):
     file_path = f"images/{file_name}"
     if not os.path.isfile(file_path):
