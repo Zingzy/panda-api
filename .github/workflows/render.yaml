@@ -1,0 +1,12 @@
+services:
+    - type: web
+      name: panda-api
+      runtime: python
+      scaling:
+        minInstances: 1
+        maxInstances: 3
+      buildCommand: pip install -r requirements.txt
+      startCommand: uvicorn main:app
+      preDeployCommand: pip install uvicorn
+
+    envVarGroups:

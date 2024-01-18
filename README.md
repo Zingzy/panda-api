@@ -4,7 +4,7 @@
         <td align="center"><img src="https://pandaa.vercel.app/raw_pic" style="height: 220px;"></td>
     <tr>
     <tr>
-        <td>😉 random pic using our api ⬆️</td>
+        <td align="center">⬆️ random pic using our api 😉</td>
     </tr>
 </table>
 
@@ -63,6 +63,9 @@ _For a more detailed API visit : https://pandaa.vercel.app/docs_
 ### Direct Deployment
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/Zingzy/panda-api)
+<a href="https://render.com/deploy?repo=https://github.com/Zingzy/panda-api">
+<img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render" height="30px"/>
+</a>
 
 ### Manual Setup
 1. Clone the repository `git clone https://github.com/Zingzy/panda-api.git`.
@@ -73,5 +76,15 @@ _For a more detailed API visit : https://pandaa.vercel.app/docs_
 <h2>🤝 Contributing</h2>
 
 Feel free to contribute to the Panda API by adding more panda facts, pictures, or improving the code. Create a pull request, and let's make the panda world even more delightful! 🎉🐼
+
+## Submission Guidelines
+
+- Create a new branch for your changes.
+- Make sure your code is formatted using [Black Formatter](https://pypi.org/project/black/)
+- If you are adding a new panda fact, add it to the `facts.txt` file in a new line, ending with a full stop.
+- If you are adding a new panda picture, add it to the `pics` folder.
+- The picture filename should be in the format `{number}.jpg`, where `{number}` is the next number in the sequence.
+- The picture should not be more than 300 KB in size.
+
 
 **Enjoy the Panda API! 🐼✨**
