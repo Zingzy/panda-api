@@ -1,12 +1,16 @@
-<img src="https://pandaa.vercel.app/raw_pic" style="height: 220px;" align="right">
+
+<table align="right">
+    <tr>
+        <td align="center"><img src="https://pandaa.vercel.app/raw_pic" style="height: 220px;"></td>
+    <tr>
+    <tr>
+        <td>😉 random pic using our api ⬆️</td>
+    </tr>
+</table>
 
 <h1>🐼 Panda API 🌟</h1>
 
 Welcome to the Panda API, where cuteness meets information about everyone's favorite black and white bears! This API serves random panda facts and adorable pictures to brighten up your day.
-
-<br>
-<br>
-<h5 align="right">😉 random pic using our api ⬆️</h5>
 
 <h2>📖 Documentation</h2>
 
