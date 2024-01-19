@@ -1,6 +1,11 @@
 from fastapi import FastAPI, HTTPException, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, FileResponse, StreamingResponse, RedirectResponse
+from fastapi.responses import (
+    JSONResponse,
+    FileResponse,
+    StreamingResponse,
+    RedirectResponse,
+)
 from cachetools import TTLCache
 import random
 from io import BytesIO
@@ -53,6 +58,7 @@ def get_random_gif(request: Request):
     return JSONResponse(
         content={"url": f"{request.base_url}g/{random.choice(panda_gifs)}"}
     )
+
 
 @app.get("/raw_pic", tags=["pics"])
 async def get_random_pic_raw():
@@ -128,7 +134,7 @@ async def get_gif(file_name: str, cache: TTLCache = Depends(create_cache)):
     return response
 
 
-@app.get('/health', tags=["health"])
+@app.get("/health", tags=["health"])
 def health():
     return JSONResponse(content={"status": "ok"})
 
@@ -139,7 +145,13 @@ def get_stats():
     num_quotes = len(panda_facts)
     num_gifs = len(panda_gifs)
 
-    return JSONResponse(content={"num_images": num_images, "num_gifs": num_gifs, "num_quotes": num_quotes})
+    return JSONResponse(
+        content={
+            "num_images": num_images,
+            "num_gifs": num_gifs,
+            "num_quotes": num_quotes,
+        }
+    )
 
 
 if __name__ == "__main__":
