@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, FileResponse, StreamingResponse
+from fastapi.responses import JSONResponse, FileResponse, StreamingResponse, RedirectResponse
 from cachetools import TTLCache
 import random
 from io import BytesIO
@@ -48,10 +48,9 @@ def get_random_pic(request: Request):
 
 @app.get("/raw_pic", tags=["pics"])
 async def get_random_pic_raw():
-    random_pic_path = f"images/{random.choice(panda_pics)}"
-    with open(random_pic_path, "rb") as file:
-        contents = file.read()
-    return StreamingResponse(BytesIO(contents), media_type="image/jpeg")
+    random_file_name = random.choice(panda_pics)
+    redirect_url = f"/i/{random_file_name}"
+    return RedirectResponse(url=redirect_url)
 
 
 @app.get("/both", tags=["facts", "pics"])
@@ -93,6 +92,12 @@ async def get_image(file_name: str, cache: TTLCache = Depends(create_cache)):
 def health():
     return JSONResponse(content={"status": "ok"})
 
+@app.get("/stats", tags=["stats"])
+def get_stats():
+    num_images = len(panda_pics)
+    num_quotes = len(panda_facts)
+
+    return JSONResponse(content={"num_images": num_images, "num_quotes": num_quotes})
 
 if __name__ == "__main__":
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    uvicorn.run("main:app", port=8000, reload=True)
