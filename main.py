@@ -48,9 +48,10 @@ def get_random_pic(request: Request):
 
 @app.get("/raw_pic", tags=["pics"])
 async def get_random_pic_raw():
-    random_file_name = random.choice(panda_pics)
-    redirect_url = f"/i/{random_file_name}"
-    return RedirectResponse(url=redirect_url)
+    random_pic_path = f"images/{random.choice(panda_pics)}"
+    with open(random_pic_path, "rb") as file:
+        contents = file.read()
+    return StreamingResponse(BytesIO(contents), media_type="image/jpeg")
 
 
 @app.get("/both", tags=["facts", "pics"])
@@ -100,4 +101,4 @@ def get_stats():
     return JSONResponse(content={"num_images": num_images, "num_quotes": num_quotes})
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8000, reload=True)
+    uvicorn.run(app, port=8000)
