@@ -176,7 +176,7 @@ Welcome to the panda API terminal!
 
 ---
 
-This is an open source project, you can find the source code in this <a href="https://github.com/zingzy/panda-api" class="url">Github Repo</a>.
+This is an open source project, you can find the source code in this <a href="https://github.com/zingzy/panda-api" class="url" target="_blank">Github Repo</a>.
 
 ---
 
@@ -342,6 +342,7 @@ Type <span class="yellow">`help`</span> to see available commands.
             outputArea.innerHTML = '';
             let intial_command = document.querySelector('.inital-command');
             intial_command.parentNode.removeChild(intial_command);
+            commandInput.value = '';
         }
 
         commandInput.addEventListener('keydown', function (event) {
