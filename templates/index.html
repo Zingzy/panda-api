@@ -157,7 +157,7 @@
 </head>
 <body>
     <div class="terminal">
-        <span class="input-prefix inital-command" style="padding-top: 10px;"><span class="dark-green">user</span>@<span class="yellow">{{ base_url }}</span>:~$ about</span>
+        <span class="input-prefix inital-command" style="padding-top: 10px;"><span class="dark-green">user</span>@<span class="yellow">{{ base_url }}</span>:~$ </span>
         <div class="output">
         <div id="welcome-message">
 <div class="intro">
@@ -206,7 +206,7 @@ Type <span class="yellow">`help`</span> to see available commands.
 
         <div class="input-container">
             <span class="input-prefix"><span class="dark-green">user</span>@<span class="yellow">{{ base_url_no_http }}</span>:~$</span>
-            <input type="text" class="command-input" id="commandInput" title="Command Input">
+            <input type="text" class="command-input" id="commandInput" title="Command Input" autocomplete="off" spellcheck="false">
         </div>
     </div>
 
@@ -267,14 +267,22 @@ Type <span class="yellow">`help`</span> to see available commands.
                     displayHelp();
                     break;
                 case 'fact':
-                case 'all':
-                case 'health':
                 case 'stats':
                     fetch(`{{ base_url }}${command}`)
                         .then(response => response.json())
                         .then(data => appendOutput(JSON.stringify(data, null, 4)))
                         .catch(error => appendOutput(`Error: ${error.message}`));
                     break;
+                case 'all':
+                    fetch(`{{ base_url }}${command}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.pic = `<a href='${data.pic}' target='_blank' class='url'>${data.pic}</a>`;
+                            data.gif = `<a href='${data.gif}' target='_blank' class='url'>${data.gif}</a>`;
+                            appendOutput(JSON.stringify(data, null, 4));
+                        })
+                        .catch(error => appendOutput(`Error: ${error.message}`));
+                        break;
                 case 'api':
                     window.open('{{ base_url }}docs');
                     break;
@@ -308,7 +316,6 @@ Type <span class="yellow">`help`</span> to see available commands.
 <span class="yellow help-out">pic</span><span class="blue">- Get a random panda pic</span>
 <span class="yellow help-out">gif</span><span class="blue">- Get a random panda gif</span>
 <span class="yellow help-out">all</span><span class="blue">- Get a random panda fact, pic, and gif</span>
-<span class="yellow help-out">health</span><span class="blue">- Get the health of the API</span>
 <span class="yellow help-out">stats</span><span class="blue">- Get the stats of the API</span>
 <span class="yellow help-out">api</span><span class="blue">- Get the full API docs</span>
 <span class="yellow help-out">github</span><span class="blue">- Go to the Github Repo</span>
@@ -326,7 +333,7 @@ Type <span class="yellow">`help`</span> to see available commands.
             if (command === '') {
                 return;
             }
-            const commands = ['fact', 'pic', 'gif', 'all', 'health', 'stats', 'api', 'github', 'help', 'cls'];
+            const commands = ['fact', 'pic', 'gif', 'all', 'stats', 'api', 'github', 'help', 'cls'];
             const matchingCommands = commands.filter(c => c.startsWith(command));
             matchingCommands.sort((a, b) => a.length - b.length);
 
@@ -340,8 +347,12 @@ Type <span class="yellow">`help`</span> to see available commands.
 
         function clearTerminal() {
             outputArea.innerHTML = '';
-            let intial_command = document.querySelector('.inital-command');
-            intial_command.parentNode.removeChild(intial_command);
+            try {
+                let intial_command = document.querySelector('.inital-command');
+                intial_command.parentNode.removeChild(intial_command);
+            } catch (error) {
+                console.log(error);
+            }
             commandInput.value = '';
         }
 
