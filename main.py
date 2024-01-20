@@ -6,13 +6,18 @@ from fastapi.responses import (
     StreamingResponse,
     RedirectResponse,
 )
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from cachetools import TTLCache
 import random
 from io import BytesIO
 import os
 import uvicorn
 
+
 app = FastAPI(title="Panda API", description="An API for pandas", version="0.0.1")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
 # Enable CORS
 origins = ["*"]
@@ -39,6 +44,13 @@ def create_cache():
 
 
 cache = Depends(create_cache)
+
+
+@app.get("/")
+async def read_root(request: Request):
+    base_url = str(request.base_url)
+    base_url_no_http = base_url[base_url.find("//")+2:-1]
+    return templates.TemplateResponse("index.html", {"request": request, "base_url": request.base_url, "base_url_no_http": base_url_no_http})
 
 
 @app.get("/fact", tags=["facts"])

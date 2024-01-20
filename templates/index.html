@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panda API Terminal</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', path='images/panda-logo.png') }}">
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 13px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(46, 46, 46, 1);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #414141;
+        }
+
+        body {
+            font-family: monospace;
+            background-color: black;
+            color: #00ef00;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        .terminal {
+            box-sizing: border-box;
+            flex: 1;
+            overflow-y: auto;
+            margin: 0 0 0 16px;
+            padding-top: 10px;
+        }
+
+        .output {
+            color: #00ef00;
+            white-space: pre-wrap;
+            margin-bottom: 8px;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .input-prefix {
+            color: #00ef00;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .command-input {
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            color: #00ef00;
+            font-family: monospace;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .output img {
+            max-height: 250px;
+            width: auto;
+            margin-top: 8px;
+        }
+
+        #welcome-message {
+            display: flex;
+            gap: 100px;
+            flex-wrap: wrap-reverse;
+        }
+
+        .url {
+            all: unset;
+            color: #006900;
+            border-bottom: 1px solid black;
+            padding-bottom: 3px;
+            text-decoration: dashed underline;
+        }
+
+        .url:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .help-out {
+            display: inline-block;
+            width: 170px;
+        }
+
+        .dark-green {
+            color: #006900;
+        }
+
+        .red {
+            color: #f12233;
+        }
+
+        .yellow {
+            color: #e5e500;
+        }
+
+        .blue {
+            color: #04a5b2;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: radial-gradient(farthest-side,#00ef00 94%,#0000) top/3.8px 3.8px no-repeat,
+                conic-gradient(#0000 30%,#00ef00);
+            -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 3.8px),#000 0);
+            animation: spinner-c7wet2 0.8s infinite linear;
+        }
+
+        @keyframes spinner-c7wet2 {
+            100% {
+                transform: rotate(1turn);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .help-out {
+                display: block;
+            }
+            .panda-ascii {
+                display: none;
+            }
+            .intro {
+                font-size: 14px;
+            }
+            .panda-text-ascii {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal">
+        <span class="input-prefix inital-command" style="padding-top: 10px;"><span class="dark-green">user</span>@<span class="yellow">{{ base_url }}</span>:~$ about</span>
+        <div class="output">
+        <div id="welcome-message">
+<div class="intro">
+<span class="panda-text-ascii">
+________  ________  ________   ________  ________          ________  ________  ___
+|\   __  \|\   __  \|\   ___  \|\   ___ \|\   __  \        |\   __  \|\   __  \|\  \
+\ \  \|\  \ \  \|\  \ \  \\ \  \ \  \_|\ \ \  \|\  \       \ \  \|\  \ \  \|\  \ \  \
+ \ \   ____\ \   __  \ \  \\ \  \ \  \ \\ \ \   __  \       \ \   __  \ \   ____\ \  \
+  \ \  \___|\ \  \ \  \ \  \\ \  \ \  \_\\ \ \  \ \  \       \ \  \ \  \ \  \___|\ \  \
+   \ \__\    \ \__\ \__\ \__\\ \__\ \_______\ \__\ \__\       \ \__\ \__\ \__\    \ \__\
+    \|__|     \|__|\|__|\|__| \|__|\|_______|\|__|\|__|        \|__|\|__|\|__|     \|__|</span>
+
+
+
+Welcome to the panda API terminal!
+
+---
+
+This is an open source project, you can find the source code in this <a href="https://github.com/zingzy/panda-api" class="url">Github Repo</a>.
+
+---
+
+Type <span class="yellow">`help`</span> to see available commands.
+</div>
+<div class="panda-ascii">
+         ⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿⣦⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢿⣿⠟⠋⠉⠀⠀⠀⠀⠉⠑⠢⣄⡀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣦⡀
+⠀⣀⠀⠀⢀⡏⠀⢀⣴⣶⣶⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⠇
+⣾⣿⣿⣦⣼⡀⠀⢺⣿⣿⡿⠃⠀⠀⠀⠀⣠⣤⣄⠀⠀⠈⡿⠋⠀
+⢿⣿⣿⣿⣿⣇⠀⠤⠌⠁⠀⡀⢲⡶⠄⢸⣏⣿⣿⠀⠀⠀⡇⠀⠀
+⠈⢿⣿⣿⣿⣿⣷⣄⡀⠀⠀⠈⠉⠓⠂⠀⠙⠛⠛⠠⠀⡸⠁⠀⠀
+⠀⠀⠻⣿⣿⣿⣿⣿⣿⣷⣦⣄⣀⠀⠀⠀⠀⠑⠀⣠⠞⠁⠀⠀⠀
+⠀⠀⠀⢸⡏⠉⠛⠛⠛⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀
+⠀⠀⠀⠸⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠛⢿⣿⣿⣿⣿⡄⠀⠀⠀⠀
+⠀⠀⠀⢷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢻⣿⣿⣿⣿⡀⠀⠀⠀
+⠀⠀⠀⢸⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀
+⠀⠀⠀⢸⣿⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⡟⠻⠿⠟⠀⠀⠀⠀
+⠀⠀⠀⠀⣿⣿⣿⣿⣶⠶⠤⠤⢤⣶⣾⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠹⣿⣿⣿⠏⠀⠀⠀⠈⢿⣿⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠈⠉⠉⠀⠀⠀⠀⠀⠀⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀
+</div>
+        </div>
+        </div>
+
+        <div class="input-container">
+            <span class="input-prefix"><span class="dark-green">user</span>@<span class="yellow">{{ base_url_no_http }}</span>:~$</span>
+            <input type="text" class="command-input" id="commandInput" title="Command Input">
+        </div>
+    </div>
+
+    <script>
+        let commandHistory = [];
+        let historyIndex = -1;
+
+        const outputArea = document.querySelector('.output');
+        const commandInput = document.getElementById('commandInput');
+
+        function appendOutput(message) {
+            outputArea.innerHTML += `<div style="padding: 10px 0">${message}</div>`;
+            setTimeout(() => {
+                commandInput.scrollIntoView();
+            }, 0);
+        }
+
+        function displayImage(url) {
+            const imgElement = document.createElement('img');
+            imgElement.src = url;
+            outputArea.appendChild(imgElement);
+            imgElement.onload = () => {
+                var elements = document.getElementsByClassName('spinner');
+                var spinner = elements[elements.length - 1];
+                spinner.style.display = 'none';
+                commandInput.scrollIntoView();
+            };
+        }
+
+        function arrowUpUpdateHistory() {
+            if (historyIndex < commandHistory.length - 1) {
+                historyIndex++;
+            }
+            commandInput.value = historyIndex >= 0 ? commandHistory[historyIndex] : '';
+            setTimeout(() => {
+                commandInput.setSelectionRange(commandInput.value.length, commandInput.value.length);
+            }, 0.5);
+        }
+
+        function arrowDownUpdateHistory() {
+            if (historyIndex >= 0) {
+                historyIndex--;
+            }
+            commandInput.value = historyIndex >= 0 ? commandHistory[historyIndex] : '';
+            setTimeout(() => {
+                commandInput.setSelectionRange(commandInput.value.length, commandInput.value.length);
+            }, 0.5);
+        }
+
+        function executeCommand(command) {
+            commandHistory.unshift(command);
+            historyIndex = -1;
+
+            switch (command.toLowerCase()) {
+                case '':
+                    break;
+                case 'help':
+                    displayHelp();
+                    break;
+                case 'fact':
+                case 'all':
+                case 'health':
+                case 'stats':
+                    fetch(`{{ base_url }}${command}`)
+                        .then(response => response.json())
+                        .then(data => appendOutput(JSON.stringify(data, null, 4)))
+                        .catch(error => appendOutput(`Error: ${error.message}`));
+                    break;
+                case 'api':
+                    window.open('{{ base_url }}docs');
+                    break;
+                case 'github':
+                    window.open('https://github.com/zingzy/panda-api');
+                    break;
+                case 'pic':
+                case 'gif':
+                    outputArea.innerHTML += `<div class="spinner"></div>`;
+                    commandInput.scrollIntoView();
+                    fetch(`{{ base_url }}raw_${command}`)
+                        .then(response => response.blob())
+                        .then(blob => {
+                            const url = URL.createObjectURL(blob);
+                            displayImage(url);
+                        })
+                        .catch(error => appendOutput(`<span class="red">Error: ${error.message}</span>`));
+                    break;
+                case 'cls':
+                case 'clear':
+                    clearTerminal();
+                    break;
+                default:
+                    appendOutput(`<span class="red">Command not recognized: ${command}</span>`);
+                    break;
+            }
+        }
+
+        function displayHelp() {
+            appendOutput(`<span class="yellow help-out">fact</span><span class="blue">- Get a random panda fact</span>
+<span class="yellow help-out">pic</span><span class="blue">- Get a random panda pic</span>
+<span class="yellow help-out">gif</span><span class="blue">- Get a random panda gif</span>
+<span class="yellow help-out">all</span><span class="blue">- Get a random panda fact, pic, and gif</span>
+<span class="yellow help-out">health</span><span class="blue">- Get the health of the API</span>
+<span class="yellow help-out">stats</span><span class="blue">- Get the stats of the API</span>
+<span class="yellow help-out">api</span><span class="blue">- Get the full API docs</span>
+<span class="yellow help-out">github</span><span class="blue">- Go to the Github Repo</span>
+<span class="yellow help-out">cls</span><span class="blue">- Clear the terminal</span>
+<span class="yellow help-out">help</span><span class="blue">- Get a list of all commands</span>
+
+<span class="green help-out">Tab</span><span class="green">=> autocompletes the command</span>
+<span class="green help-out">Up or Down Arrow</span><span class="green">=> cycles through command history</span>
+<span class="green help-out">Ctrl + Shift + C</span><span class="green">=> clears the terminal</span>`
+            );
+        }
+
+        function autocomplete() {
+            const command = commandInput.value.trim().toLowerCase();
+            if (command === '') {
+                return;
+            }
+            const commands = ['fact', 'pic', 'gif', 'all', 'health', 'stats', 'api', 'github', 'help', 'cls'];
+            const matchingCommands = commands.filter(c => c.startsWith(command));
+            matchingCommands.sort((a, b) => a.length - b.length);
+
+            if (matchingCommands.length >= 1) {
+                commandInput.value = matchingCommands[0];
+                setTimeout(() => {
+                    commandInput.setSelectionRange(commandInput.value.length, commandInput.value.length);
+                }, 1);
+            }
+        }
+
+        function clearTerminal() {
+            outputArea.innerHTML = '';
+            let intial_command = document.querySelector('.inital-command');
+            intial_command.parentNode.removeChild(intial_command);
+        }
+
+        commandInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                const command = event.target.value.trim();
+                appendOutput(`<span class="input-prefix"><span class="dark-green">user</span>@<span class="yellow">{{ base_url_no_http }}</span>:~$ ${command}</span>`);
+                executeCommand(command);
+                event.target.value = '';
+            }
+            if (event.key === 'ArrowUp') {
+                arrowUpUpdateHistory();
+            }
+            if (event.key === 'ArrowDown') {
+                arrowDownUpdateHistory();
+            }
+            if (event.key === 'Tab') {
+                event.preventDefault();
+                autocomplete();
+            }
+            if (event.ctrlKey && event.shiftKey && event.key === 'C') {
+                event.preventDefault();
+                clearTerminal();
+            }
+            if (event.ctrlKey && event.shiftKey && event.key === 'I') {
+                event.preventDefault();
+            }
+        });
+
+        document.getElementById('commandInput').addEventListener('blur', function(event) {
+            event.target.focus();
+        });
+
+        commandInput.focus();
+    </script>
+</body>
+</html>
