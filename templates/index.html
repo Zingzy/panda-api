@@ -257,8 +257,10 @@ Type <span class="yellow">`help`</span> to see available commands.
         }
 
         function executeCommand(command) {
-            commandHistory.unshift(command);
-            historyIndex = -1;
+            if(command != ''){
+                commandHistory.unshift(command);
+                historyIndex = -1;
+            }
 
             switch (command.toLowerCase()) {
                 case '':
@@ -287,6 +289,7 @@ Type <span class="yellow">`help`</span> to see available commands.
                     window.open('{{ base_url }}docs');
                     break;
                 case 'github':
+                case 'git':
                     window.open('https://github.com/zingzy/panda-api');
                     break;
                 case 'pic':
