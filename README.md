@@ -1,7 +1,7 @@
 
 <table align="right">
     <tr>
-        <td align="center"><img src="https://pandaa.vercel.app/raw_gif" style="width: 300px;"></td>
+        <td align="center"><img src="https://pandaa.vercel.app/raw_gif" style="width: 300px;" alt="Please Reload"></td>
     <tr>
     <tr>
         <td align="center">⬆️ random gif using our api 😉</td>

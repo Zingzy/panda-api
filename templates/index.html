@@ -293,11 +293,14 @@ Type <span class="yellow">`help`</span> to see available commands.
                 case 'gif':
                     outputArea.innerHTML += `<div class="spinner"></div>`;
                     commandInput.scrollIntoView();
+                    commandInput.disabled = true;
                     fetch(`{{ base_url }}raw_${command}`)
                         .then(response => response.blob())
                         .then(blob => {
                             const url = URL.createObjectURL(blob);
                             displayImage(url);
+                            commandInput.disabled = false;
+                            commandInput.focus();
                         })
                         .catch(error => appendOutput(`<span class="red">Error: ${error.message}</span>`));
                     break;
