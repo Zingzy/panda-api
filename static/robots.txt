@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /private/
+Sitemap: https://pandaa.vercel.app/sitemap.xml

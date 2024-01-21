@@ -165,6 +165,14 @@ def get_stats():
         }
     )
 
+@app.get("/sitemap.xml", tags=["sitemap"])
+def sitemap(cache: TTLCache = Depends(create_cache)):
+    return FileResponse(r"static/sitemap.xml")
+
+@app.get("/robots.txt", tags=["robots"])
+def robots(cache: TTLCache = Depends(create_cache)):
+    return FileResponse(r"static/robots.txt")
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
