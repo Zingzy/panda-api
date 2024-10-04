@@ -1,7 +1,7 @@
 
 <table align="right">
     <tr>
-        <td align="center"><img src="https://pandaa.vercel.app/raw_gif" style="width: 300px;" alt="Please Reload"></td>
+        <td align="center"><img src="https://panda.spoo.me/raw_gif" style="width: 300px;" alt="Please Reload"></td>
     <tr>
     <tr>
         <td align="center">⬆️ random gif using our api 😉</td>
@@ -38,7 +38,7 @@ Welcome to the Panda API, where cuteness meets information about everyone's favo
 
 <table align="right">
     <tr>
-        <td align="center"><img src="https://pandaa.vercel.app/raw_pic" style="height: 180px;"></td>
+        <td align="center"><img src="https://panda.spoo.me/raw_pic" style="height: 180px;"></td>
     <tr>
     <tr>
         <td align="center">⬆️ random pic using our api 😉</td>
