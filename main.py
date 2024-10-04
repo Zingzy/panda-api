@@ -12,6 +12,7 @@ from cachetools import TTLCache
 import random
 from io import BytesIO
 import os
+import json
 import uvicorn
 
 
@@ -35,8 +36,12 @@ with open("facts.txt", "r") as f:
 panda_facts = [i.strip() for i in panda_facts]
 
 panda_pics = os.listdir("images")
+with open("images.json", "r") as f:
+    pics_json = json.loads(f.read())
 
 panda_gifs = os.listdir("gifs")
+with open("gifs.json", "r") as f:
+    gifs_json = json.loads(f.read())
 
 
 def create_cache():
@@ -74,18 +79,14 @@ def get_random_gif(request: Request):
 
 @app.get("/raw_pic", tags=["pics"])
 async def get_random_pic_raw():
-    random_pic_path = f"images/{random.choice(panda_pics)}"
-    with open(random_pic_path, "rb") as file:
-        contents = file.read()
-    return StreamingResponse(BytesIO(contents), media_type="image/jpeg")
+    random_pic = random.choice(panda_pics)
+    return RedirectResponse(url=pics_json[random_pic])
 
 
 @app.get("/raw_gif", tags=["gifs"])
 async def get_random_gif_raw():
-    random_gif_path = f"gifs/{random.choice(panda_gifs)}"
-    with open(random_gif_path, "rb") as file:
-        contents = file.read()
-    return StreamingResponse(BytesIO(contents), media_type="image/gif")
+    random_gif = random.choice(panda_gifs)
+    return RedirectResponse(url=gifs_json[random_gif])
 
 
 @app.get("/all", tags=["facts", "pics", "gifs"])
@@ -126,9 +127,7 @@ async def get_image(file_name: str, cache: TTLCache = Depends(create_cache)):
     if cached_response:
         return cached_response
 
-    response = FileResponse(file_path, media_type="image/jpeg")
-    cache[file_name] = response
-    return response
+    return RedirectResponse(url=pics_json[file_name])
 
 
 @app.get("/g/{file_name}", tags=["gifs"])
@@ -141,9 +140,7 @@ async def get_gif(file_name: str, cache: TTLCache = Depends(create_cache)):
     if cached_response:
         return cached_response
 
-    response = FileResponse(file_path, media_type="image/gif")
-    cache[file_name] = response
-    return response
+    return RedirectResponse(url=gifs_json[file_name])
 
 
 @app.get("/health", tags=["health"])
